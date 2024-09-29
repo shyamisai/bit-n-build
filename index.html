@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Management System</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #eaeff2;
+        }
+
+        header {
+            background-color: #003366;
+            color: #fff;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /* Profile Container */
+        .profile-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .profile-btn {
+            background-color: #ffc107;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .profile-btn:hover {
+            background-color: #e0a800;
+        }
+
+        /* Dropdown for Profile */
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 45px;
+            left: 0;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .dropdown a {
+            color: #003366;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-weight: bold;
+        }
+
+        .dropdown a:hover {
+            background-color: #eaeff2;
+        }
+
+        /* Sort Dropdown */
+        .sort-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .sort-btn {
+            background-color: #ffffff;
+            color: #003366;
+            padding: 10px 20px;
+            border: 2px solid #003366;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .sort-btn:hover {
+            background-color: #eaeff2;
+        }
+
+        /* Dropdowns for Sort Options */
+        .dropdown-sort {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background-color: #fff;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .dropdown-sort a {
+            color: #003366;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-weight: bold;
+        }
+
+        .dropdown-sort a:hover {
+            background-color: #eaeff2;
+        }
+
+        /* Event Container */
+        .events-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .event-bar {
+            background-color: #003366;
+            color: #ffffff;
+            border-radius: 5px;
+            width: 60%;
+            margin: 15px 0;
+            padding: 15px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            overflow: hidden;
+            height: 50px;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .event-bar:hover {
+            height: 270px;
+            background-color: #004080;
+        }
+
+        .event-summary {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .event-summary h2 {
+            margin: 0;
+            text-align: center;
+            width: 100%;
+            font-size: 20px;
+        }
+
+        .event-details {
+            background-color: #005792;
+            padding: 10px;
+            opacity: 0;
+            position: absolute;
+            top: 50px;
+            width: 95%;
+            left: 2.5%;
+            transition: all 0.3s ease-in-out;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .event-bar:hover .event-details {
+            top: 60px;
+            opacity: 1;
+        }
+
+        .event-details p {
+            margin: 5px 0;
+        }
+
+        .register-btn {
+            align-self: center;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #ffc107;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .register-btn:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="profile-container">
+            <button class="profile-btn" onclick="toggleDropdown()">My Profile</button>
+            <div class="dropdown" id="profileDropdown">
+                <a href="#">User Details</a>
+                <a href="#">Participated Events</a>
+                <a href="#">Log Out</a>
+            </div>
+        </div>
+        <div class="sort-container">
+            <button class="sort-btn" onclick="toggleSortDropdown()">Sort By ⏷</button>
+            <div class="dropdown-sort" id="sortDropdown">
+                <a href="#" onclick="filterEvents('Artificial Intelligence')">Domain: Artificial Intelligence</a>
+                <a href="#" onclick="filterEvents('Data Science')">Domain: Data Science</a>
+                <a href="#" onclick="filterEvents('Web Development')">Domain: Web Development</a>
+                <a href="#" onclick="filterEvents('Cyber Security')">Domain: Cyber Security</a>
+                <a href="#" onclick="filterEvents('Blockchain')">Domain: Blockchain</a>
+                <a href="#" onclick="filterEvents('XYZ College')">College: XYZ College</a>
+                <a href="#" onclick="filterEvents('ABC University')">College: ABC University</a>
+                <a href="#" onclick="filterEvents('DEF Institute')">College: DEF Institute</a>
+                <a href="#" onclick="filterEvents('PQR University')">College: PQR University</a>
+                <a href="#" onclick="filterEvents('STU Institute')">College: STU Institute</a>
+                <a href="#" onclick="filterEvents('10th October 2024')">Date: 10th October 2024</a>
+                <a href="#" onclick="filterEvents('15th October 2024')">Date: 15th October 2024</a>
+                <a href="#" onclick="filterEvents('20th October 2024')">Date: 20th October 2024</a>
+                <a href="#" onclick="filterEvents('25th October 2024')">Date: 25th October 2024</a>
+                <a href="#" onclick="filterEvents('30th October 2024')">Date: 30th October 2024</a>
+                <a href="#" onclick="filterEvents('₹4,00,000')">Prize Pool: ₹4,00,000</a>
+                <a href="#" onclick="filterEvents('₹2,50,000')">Prize Pool: ₹2,50,000</a>
+                <a href="#" onclick="filterEvents('₹1,00,000')">Prize Pool: ₹1,00,000</a>
+                <a href="#" onclick="filterEvents('₹3,00,000')">Prize Pool: ₹3,00,000</a>
+                <a href="#" onclick="filterEvents('₹2,00,000')">Prize Pool: ₹2,00,000</a>
+                <a href="#" onclick="filterEvents('XYZ College Auditorium')">Venue: XYZ College Auditorium</a>
+                <a href="#" onclick="filterEvents('ABC University Hall')">Venue: ABC University Hall</a>
+                <a href="#" onclick="filterEvents('DEF Institute Campus')">Venue: DEF Institute Campus</a>
+                <a href="#" onclick="filterEvents('PQR University Main Hall')">Venue: PQR University Main Hall</a>
+                <a href="#" onclick="filterEvents('STU Institute Auditorium')">Venue: STU Institute Auditorium</a>
+                <a href="#" onclick="filterEvents('all')">Show All</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="events-container">
+        <!-- Event Examples -->
+        <div class="event-bar" data-domain="Artificial Intelligence" data-college="XYZ College" data-date="10th October 2024" data-prize="₹4,00,000" data-venue="XYZ College Auditorium">
+            <div class="event-summary">
+                <h2>Artificial Intelligence Hackathon</h2>
+            </div>
+            <div class="event-details">
+                <p><strong>Date:</strong> 10th October 2024</p>
+                <p><strong>Conducted by:</strong> XYZ College</p>
+                <p><strong>Venue:</strong> XYZ College Auditorium</p>
+                <p><strong>Registration Fee:</strong> ₹500</p>
+                <p><strong>Prize Pool:</strong> ₹4,00,000</p>
+                <p><strong>Domain:</strong> Artificial Intelligence</p>
+                <button class="register-btn">Register</button>
+            </div>
+        </div>
+
+        <div class="event-bar" data-domain="Data Science" data-college="ABC University" data-date="15th October 2024" data-prize="₹2,50,000" data-venue="ABC University Hall">
+            <div class="event-summary">
+                <h2>Data Science Symposium</h2>
+            </div>
+            <div class="event-details">
+                <p><strong>Date:</strong> 15th October 2024</p>
+                <p><strong>Conducted by:</strong> ABC University</p>
+                <p><strong>Venue:</strong> ABC University Hall</p>
+                <p><strong>Registration Fee:</strong> ₹300</p>
+                <p><strong>Prize Pool:</strong> ₹2,50,000</p>
+                <p><strong>Domain:</strong> Data Science</p>
+                <button class="register-btn">Register</button>
+            </div>
+        </div>
+
+        <div class="event-bar" data-domain="Web Development" data-college="DEF Institute" data-date="20th October 2024" data-prize="₹1,00,000" data-venue="DEF Institute Campus">
+            <div class="event-summary">
+                <h2>Web Development Bootcamp</h2>
+            </div>
+            <div class="event-details">
+                <p><strong>Date:</strong> 20th October 2024</p>
+                <p><strong>Conducted by:</strong> DEF Institute</p>
+                <p><strong>Venue:</strong> DEF Institute Campus</p>
+                <p><strong>Registration Fee:</strong> ₹800</p>
+                <p><strong>Prize Pool:</strong> ₹1,00,000</p>
+                <p><strong>Domain:</strong> Web Development</p>
+                <button class="register-btn">Register</button>
+            </div>
+        </div>
+
+        <div class="event-bar" data-domain="Cyber Security" data-college="PQR University" data-date="25th October 2024" data-prize="₹3,00,000" data-venue="PQR University Main Hall">
+            <div class="event-summary">
+                <h2>Cyber Security Challenge</h2>
+            </div>
+            <div class="event-details">
+                <p><strong>Date:</strong> 25th October 2024</p>
+                <p><strong>Conducted by:</strong> PQR University</p>
+                <p><strong>Venue:</strong> PQR University Main Hall</p>
+                <p><strong>Registration Fee:</strong> ₹700</p>
+                <p><strong>Prize Pool:</strong> ₹3,00,000</p>
+                <p><strong>Domain:</strong> Cyber Security</p>
+                <button class="register-btn">Register</button>
+            </div>
+        </div>
+
+        <div class="event-bar" data-domain="Blockchain" data-college="STU Institute" data-date="30th October 2024" data-prize="₹2,00,000" data-venue="STU Institute Auditorium">
+            <div class="event-summary">
+                <h2>Blockchain Innovation Summit</h2>
+            </div>
+            <div class="event-details">
+                <p><strong>Date:</strong> 30th October 2024</p>
+                <p><strong>Conducted by:</strong> STU Institute</p>
+                <p><strong>Venue:</strong> STU Institute Auditorium</p>
+                <p><strong>Registration Fee:</strong> ₹900</p>
+                <p><strong>Prize Pool:</strong> ₹2,00,000</p>
+                <p><strong>Domain:</strong> Blockchain</p>
+                <button class="register-btn">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle the profile dropdown
+        function toggleDropdown() {
+            var dropdown = document.getElementById("profileDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        // Toggle the sort dropdown
+        function toggleSortDropdown() {
+            var dropdown = document.getElementById("sortDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        // Filter events based on the selected criteria
+        function filterEvents(criteria) {
+            var eventBars = document.getElementsByClassName("event-bar");
+
+            for (var i = 0; i < eventBars.length; i++) {
+                var event = eventBars[i];
+
+                if (criteria === "all") {
+                    event.style.display = "block"; // Show all events
+                } else {
+                    var domain = event.getAttribute("data-domain");
+                    var college = event.getAttribute("data-college");
+                    var date = event.getAttribute("data-date");
+                    var prize = event.getAttribute("data-prize");
+                    var venue = event.getAttribute("data-venue");
+
+                    // Check if the event matches the criteria and display accordingly
+                    if (
+                        domain === criteria || 
+                        college === criteria || 
+                        date === criteria || 
+                        prize === criteria || 
+                        venue === criteria
+                    ) {
+                        event.style.display = "block";
+                    } else {
+                        event.style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.profile-btn') && !event.target.matches('.sort-btn')) {
+                var dropdowns = document.getElementsByClassName("dropdown");
+                var dropdownsSort = document.getElementsByClassName("dropdown-sort");
+                
+                for (var i = 0; i < dropdowns.length; i++) {
+                    if (dropdowns[i].style.display === "block") {
+                        dropdowns[i].style.display = "none";
+                    }
+                }
+                
+                for (var i = 0; i < dropdownsSort.length; i++) {
+                    if (dropdownsSort[i].style.display === "block") {
+                        dropdownsSort[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
